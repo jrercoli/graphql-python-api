@@ -1,5 +1,6 @@
 from api import app, db
 from api import models
+from api.queries import listPosts_resolver
 
 from ariadne import load_schema_from_path, make_executable_schema, \
     graphql_sync, snake_case_fallback_resolvers, ObjectType
@@ -11,6 +12,9 @@ type_defs = load_schema_from_path("schema.graphql")
 schema = make_executable_schema(
     type_defs, snake_case_fallback_resolvers
 )
+
+query = ObjectType("Query")
+query.set_field("listPosts", listPosts_resolver)
 
 @app.route("/graphql", methods=["GET"])
 def graphql_playground():
